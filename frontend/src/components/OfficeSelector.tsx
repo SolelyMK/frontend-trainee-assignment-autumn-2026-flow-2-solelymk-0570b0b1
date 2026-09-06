@@ -9,7 +9,7 @@ type OfficeMetaPropsType = {
 
 function OfficeSelector() {
     return (
-        <div className="bg-white basis-[72px] border-b border-b-[#E2E8F0] flex p-[24px_40px]">
+        <div className="bg-white basis-[min-content] border-b border-b-[#E2E8F0] flex p-[24px_40px]">
             <div className="flex flex-col gap-[4px] grow cursor-pointer">
                 <SelectionTrigger officeType="Офис Москва" />
                 <OfficeMeta adress="ул. Лесная 7" localTime="Местное время: 14:35 MSK" />
