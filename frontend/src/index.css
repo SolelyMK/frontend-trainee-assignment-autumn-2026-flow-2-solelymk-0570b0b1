@@ -6,3 +6,20 @@
     height: 100%;
     align-content: center;
 }
+
+#capacity-selector {
+    anchor-name: --capacityselector;
+}
+
+#capacity-checkbox:checked ~ #capacity-dropdown {
+    visibility: visible;
+}
+
+#capacity-dropdown {
+    position: absolute;
+    position-anchor: --capacityselector;
+    top: calc(anchor(bottom) + 6px);
+    left: anchor(left);
+    right: anchor(right);
+    visibility: hidden;
+}

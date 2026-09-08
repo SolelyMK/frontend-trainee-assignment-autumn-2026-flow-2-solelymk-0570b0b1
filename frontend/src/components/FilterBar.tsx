@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react"
 import DateSelector from "./DateSelector"
 
 type StartTimeSelectorPropsType = {
@@ -9,7 +10,7 @@ type DurationSelectorPropsType = {
 }
 
 type CapacitySelectorPropsType = {
-    cap?: string
+    cap?: number
 }
 
 function FilterBar() {
@@ -70,15 +71,61 @@ function DurationSelector(props: DurationSelectorPropsType) {
 }
 
 function CapacitySelector(props: CapacitySelectorPropsType) {
+    const capacityArray = [2, 4, 6, 8, 10, 12];
+
+    const [value, SetValue] = useState<number>(props.cap ?? capacityArray[0]);
+
+    function CapacitySelectorClick(): void {
+        const checkbox = document.querySelector<HTMLInputElement>('#capacity-checkbox')!;
+        checkbox.checked = !checkbox.checked;
+    }
+
+    function CapSelect(e: React.MouseEvent<HTMLDivElement, MouseEvent>, n: number): void {
+        const checkbox = document.querySelector<HTMLInputElement>('#capacity-checkbox')!;
+        const div = e.target as HTMLDivElement;
+
+        document.querySelectorAll<HTMLDivElement>('#capacity-dropdown > *')!.forEach((i) => {
+            i.style.backgroundColor = '#ffffff';
+            const img = i.children[1] as HTMLImageElement;
+            img.style.opacity = '0%';
+        });
+        checkbox.checked = !checkbox.checked;
+        div.style.backgroundColor = '#CCFAF1';
+
+        const img = div.children[1] as HTMLImageElement;
+        img.style.opacity = '100%';
+
+        SetValue(n);
+    }
+
+    useEffect(() => {
+        const div = document.querySelector<HTMLDivElement>('#capacity-dropdown')!.children[capacityArray.indexOf(value)] as HTMLDivElement;
+        const img = div.children[1] as HTMLImageElement;
+
+        div.style.backgroundColor = '#CCFAF1';
+        img.style.opacity = '100%';
+    });
     return (
-        <div className="flex flex-col gap-[6px]">
-            <span className="text-[#94A3B8] text-[11px] font-[700] uppercase">Дата</span>
-            <div className="border border-[#E2E8F0] p-[10px_14px] rounded-[9px] flex gap-[8px] items-center cursor-pointer">
-                <img src="src/assets/users.svg" alt="" />
-                <span className="text-[#0F172A] text-[14px] font-[400] select-none">Мин. { props.cap ?? '2 чел.' }</span>
-                <img src="src/assets/chevron-down.svg" alt="" />
+        <>
+            <div className="flex flex-col gap-[6px] select-none">
+                <span className="text-[#94A3B8] text-[11px] font-[700] uppercase">Дата</span>
+                <div id="capacity-selector" onClick={CapacitySelectorClick} className="border border-[#E2E8F0] p-[10px_14px] rounded-[9px] flex gap-[8px] items-center cursor-pointer">
+                    <img src="src/assets/users.svg" alt="" />
+                    <span className="text-[#0F172A] text-[14px] font-[400] select-none">Мин. { value } чел.</span>
+                    <img src="src/assets/chevron-down.svg" alt="" />
+                </div>
             </div>
-        </div>
+            <input hidden type="checkbox" name="" id="capacity-checkbox" />
+            <div id="capacity-dropdown" className="flex flex-col rounded-[12px] border border-[#E5E7EB] bg-white gap-[4px] font-[400] text-[14px] text-[#0F1729] p-[8px]">
+                {
+                    capacityArray.map((i) => 
+                    <div onClick={(e) => CapSelect(e, i)} key={i} className="p-[8px_12px] cursor-pointer select-none rounded-[6px] flex justify-between">
+                        <span>{ i } чел.</span>
+                        <img className="opacity-0" src="/src/assets/check.svg" alt="" />
+                    </div>)
+                }
+            </div>
+        </>
     )
 }
 
