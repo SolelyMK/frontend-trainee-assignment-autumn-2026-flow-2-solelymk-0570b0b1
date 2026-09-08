@@ -15,7 +15,10 @@ type CapacitySelectorPropsType = {
 function FilterBar() {
     return (
         <div className="basis-[min-content] bg-white p-[20px_40px] border-b border-b-[#E2E8F0] flex gap-[16px]">
-            <DateSelector />
+            <div className="flex flex-col gap-[6px]">
+            <span className="text-[#94A3B8] text-[11px] font-[700] uppercase">Дата</span>
+                <DateSelector />
+            </div>
             <StartTimeSelector />
             <DurationSelector />
             <CapacitySelector />

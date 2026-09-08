@@ -1,3 +1,5 @@
+import DateSelector from "./DateSelector";
+
 type RightScheduleColumnPropsType = {
     date: string
 }
@@ -10,6 +12,7 @@ function RightScheduleColumn(props: RightScheduleColumnPropsType) {
                     <span className="text-[20px] text-[#0F172A] font-[800]">Расписание на день</span>
                     <span className="text-[14px] text-[#475569] font-[400]">{ props.date }</span>
                 </div>
+                <DateSelector />
             </div>
             <Timeline />
             <div className="flex py-[12px]">
