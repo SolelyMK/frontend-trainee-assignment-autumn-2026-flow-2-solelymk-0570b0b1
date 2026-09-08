@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import DateSelector from "./DateSelector"
 
 type StartTimeSelectorPropsType = {
@@ -6,7 +6,7 @@ type StartTimeSelectorPropsType = {
 }
 
 type DurationSelectorPropsType = {
-    dur?: string
+    dur?: string,
 }
 
 type CapacitySelectorPropsType = {
@@ -59,14 +59,82 @@ function StartTimeSelector(props: StartTimeSelectorPropsType) {
 }
 
 function DurationSelector(props: DurationSelectorPropsType) {
+    
+    const durationArray: Array<string> = [];
+    const [startTime] = useState(new Date().getHours());
+
+    const hours = useMemo(() => 20 - startTime, [startTime]);
+
+    for (let i = 0; i < hours; i++) {
+        if (i !== 0) {
+            for (let j = 0; j <= 45; j += 15) {
+                if (j === 0) {
+                    durationArray.push(`${i} часа`);
+                } else {
+                    durationArray.push(`${i} ч ${j} мин`);
+                }
+            }
+        } else {
+            for (let j = 0; j <= 45; j += 15) {
+                if (j !== 0) {
+                    durationArray.push(`${j} мин`);
+                }
+            }
+        }
+    }
+
+    const [value, SetValue] = useState(props.dur ?? durationArray[0]);
+
+    function DurationSelectorClick(): void {
+        const checkbox = document.querySelector<HTMLInputElement>('#duration-checkbox')!;
+        checkbox.checked = !checkbox.checked;
+    }
+
+    function DurSelect(e: React.MouseEvent<HTMLDivElement, MouseEvent>, s: string): void {
+        const checkbox = document.querySelector<HTMLInputElement>('#duration-checkbox')!;
+        const div = e.target as HTMLDivElement;
+
+        document.querySelectorAll<HTMLDivElement>('#duration-dropdown > *')!.forEach((i) => {
+            i.style.backgroundColor = '#ffffff';
+            const img = i.children[1] as HTMLImageElement;
+            img.style.opacity = '0%';
+        });
+        checkbox.checked = !checkbox.checked;
+        div.style.backgroundColor = '#CCFAF1';
+
+        const img = div.children[1] as HTMLImageElement;
+        img.style.opacity = '100%';
+
+        SetValue(s);
+    }
+
+    useEffect(() => {
+        const div = document.querySelector<HTMLDivElement>('#duration-dropdown')!.children[durationArray.indexOf(value)] as HTMLDivElement;
+        const img = div.children[1] as HTMLImageElement;
+
+        div.style.backgroundColor = '#CCFAF1';
+        img.style.opacity = '100%';
+    });
     return (
-        <div className="flex flex-col gap-[6px]">
-            <span className="text-[#94A3B8] text-[11px] font-[700] uppercase">Длительность</span>
-            <div className="border border-[#E2E8F0] p-[10px_14px] rounded-[9px] flex gap-[8px] items-center cursor-pointer">
-                <span className="text-[#0F172A] text-[14px] font-[400] select-none">{ props.dur ?? '15 мин' }</span>
-                <img src="src/assets/chevron-down.svg" alt="" />
+        <>
+            <div className="flex flex-col gap-[6px] select-none">
+                <span className="text-[#94A3B8] text-[11px] font-[700] uppercase">Длительность</span>
+                <div id="duration-selector" onClick={DurationSelectorClick} className="border border-[#E2E8F0] p-[10px_14px] rounded-[9px] flex gap-[8px] items-center cursor-pointer">
+                    <span className="text-[#0F172A] text-[14px] font-[400] select-none">{ value }</span>
+                    <img src="/src/assets/chevron-down.svg" alt="" />
+                </div>
             </div>
-        </div>
+            <input hidden id="duration-checkbox" type="checkbox" />
+            <div id="duration-dropdown" className="flex flex-col rounded-[12px] border border-[#E5E7EB] bg-white gap-[4px] font-[400] text-[14px] text-[#0F1729] p-[8px]">
+                {
+                    durationArray.map((i, index) => 
+                    <div key={index} onClick={(e) => DurSelect(e, i)} className="p-[8px_12px] cursor-pointer select-none rounded-[6px] flex justify-between">
+                        <span className="pointer-events-none">{ i }</span>
+                        <img className="opacity-0 pointer-events-none" src="/src/assets/check.svg" alt="" />
+                    </div>)
+                }
+            </div>
+        </>
     )
 }
 
@@ -110,9 +178,9 @@ function CapacitySelector(props: CapacitySelectorPropsType) {
             <div className="flex flex-col gap-[6px] select-none">
                 <span className="text-[#94A3B8] text-[11px] font-[700] uppercase">Дата</span>
                 <div id="capacity-selector" onClick={CapacitySelectorClick} className="border border-[#E2E8F0] p-[10px_14px] rounded-[9px] flex gap-[8px] items-center cursor-pointer">
-                    <img src="src/assets/users.svg" alt="" />
+                    <img src="/src/assets/users.svg" alt="" />
                     <span className="text-[#0F172A] text-[14px] font-[400] select-none">Мин. { value } чел.</span>
-                    <img src="src/assets/chevron-down.svg" alt="" />
+                    <img src="/src/assets/chevron-down.svg" alt="" />
                 </div>
             </div>
             <input hidden type="checkbox" name="" id="capacity-checkbox" />
@@ -120,8 +188,8 @@ function CapacitySelector(props: CapacitySelectorPropsType) {
                 {
                     capacityArray.map((i) => 
                     <div onClick={(e) => CapSelect(e, i)} key={i} className="p-[8px_12px] cursor-pointer select-none rounded-[6px] flex justify-between">
-                        <span>{ i } чел.</span>
-                        <img className="opacity-0" src="/src/assets/check.svg" alt="" />
+                        <span className="pointer-events-none">{ i } чел.</span>
+                        <img className="opacity-0 pointer-events-none" src="/src/assets/check.svg" alt="" />
                     </div>)
                 }
             </div>

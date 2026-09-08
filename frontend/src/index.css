@@ -11,7 +11,15 @@
     anchor-name: --capacityselector;
 }
 
-#capacity-checkbox:checked ~ #capacity-dropdown {
+#duration-selector {
+    anchor-name: --durationselector;
+}
+
+#capacity-checkbox:checked + #capacity-dropdown {
+    visibility: visible;
+}
+
+#duration-checkbox:checked + #duration-dropdown {
     visibility: visible;
 }
 
@@ -21,5 +29,13 @@
     top: calc(anchor(bottom) + 6px);
     left: anchor(left);
     right: anchor(right);
+    visibility: hidden;
+}
+
+#duration-dropdown {
+    position: absolute;
+    position-anchor: --durationselector;
+    top: calc(anchor(bottom) + 6px);
+    left: anchor(left);
     visibility: hidden;
 }
