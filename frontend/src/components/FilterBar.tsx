@@ -109,11 +109,13 @@ function DurationSelector(props: DurationSelectorPropsType) {
     }
 
     useEffect(() => {
-        const div = document.querySelector<HTMLDivElement>('#duration-dropdown')!.children[durationArray.indexOf(value)] as HTMLDivElement;
-        const img = div.children[1] as HTMLImageElement;
+        const div = document.querySelector<HTMLDivElement>('#duration-dropdown')?.children[durationArray.indexOf(value)] as HTMLDivElement;
+        if (div) {
+            const img = div.children[1] as HTMLImageElement;
 
-        div.style.backgroundColor = '#CCFAF1';
-        img.style.opacity = '100%';
+            div.style.backgroundColor = '#CCFAF1';
+            img.style.opacity = '100%';
+        }
     });
     return (
         <>
@@ -167,11 +169,13 @@ function CapacitySelector(props: CapacitySelectorPropsType) {
     }
 
     useEffect(() => {
-        const div = document.querySelector<HTMLDivElement>('#capacity-dropdown')!.children[capacityArray.indexOf(value)] as HTMLDivElement;
-        const img = div.children[1] as HTMLImageElement;
+        const div = document.querySelector<HTMLDivElement>('#capacity-dropdown')?.children[capacityArray.indexOf(value)] as HTMLDivElement;
+        if (div) {
+            const img = div.children[1] as HTMLImageElement;
 
-        div.style.backgroundColor = '#CCFAF1';
-        img.style.opacity = '100%';
+            div.style.backgroundColor = '#CCFAF1';
+            img.style.opacity = '100%';
+        }
     });
     return (
         <>
