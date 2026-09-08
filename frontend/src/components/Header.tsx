@@ -30,7 +30,7 @@ function Title() {
     return (
         <div className="flex gap-[12px] items-center">
             <div className="bg-[#0D9488] size-[36px] rounded-[10px] flex">
-                <img src="src/assets/BookRoomIcon.svg" alt="" className="h-[15px] w-[13.5px] m-auto"/>
+                <img src="/src/assets/BookRoomIcon.svg" alt="" className="h-[15px] w-[13.5px] m-auto"/>
             </div>
             <div className="text-[20px] font-[800] text-[#0F172A]">
                 <span>BookRoom</span>
